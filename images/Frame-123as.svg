@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <!-- Fundo branco -->
+  <rect width="400" height="500" fill="#f8f9fa" rx="20"/>
+  
+  <!-- Ícone de escudo verde com check -->
+  <g transform="translate(200, 120)">
+    <!-- Escudo -->
+    <path d="M 0,-60 L 40,-45 L 40,0 Q 40,30 0,50 Q -40,30 -40,0 L -40,-45 Z" 
+          fill="none" 
+          stroke="#0d7f3f" 
+          stroke-width="8" 
+          stroke-linejoin="round"/>
+    
+    <!-- Check mark -->
+    <path d="M -20,0 L -5,15 L 25,-20" 
+          fill="none" 
+          stroke="#0d7f3f" 
+          stroke-width="8" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Texto "Pagamento IOF" -->
+  <text x="200" y="280" 
+        font-family="Arial, Helvetica, sans-serif" 
+        font-size="42" 
+        font-weight="600" 
+        fill="#2d3436" 
+        text-anchor="middle">Pagamento IOF</text>
+  
+  <!-- Texto "Confirmado!" -->
+  <text x="200" y="340" 
+        font-family="Arial, Helvetica, sans-serif" 
+        font-size="42" 
+        font-weight="600" 
+        fill="#2d3436" 
+        text-anchor="middle">Confirmado!</text>
+</svg>
