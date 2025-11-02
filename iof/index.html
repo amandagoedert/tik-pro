@@ -748,12 +748,32 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
   function getQrImageSource(pix) {
     if (!pix) return '';
-    const imageCandidate = pix.qrCodeImage || pix.qr_code_image || pix.qrcode || pix.qr_code;
+    const imageCandidate =
+      pix.qrCodeImage ||
+      pix.qr_code_image ||
+      pix.qrcode_image ||
+      pix.qrCode ||
+      pix.qrcode ||
+      pix.qr_code ||
+      pix.qrCodeBase64 ||
+      pix.qrcode_base64 ||
+      pix.qr_code_base64 ||
+      pix.qrCodeUrl ||
+      pix.qr_code_url ||
+      pix.qrcode_url ||
+      pix.imageUrl ||
+      pix.image_url ||
+      pix.url;
+
     if (imageCandidate) {
-      if (imageCandidate.startsWith('data:image') || imageCandidate.startsWith('http')) {
-        return imageCandidate;
+      const candidate = imageCandidate.trim();
+      if (!candidate) {
+        return '';
       }
-      return `data:image/png;base64,${imageCandidate}`;
+      if (/^data:image/i.test(candidate) || /^https?:\/\//i.test(candidate)) {
+        return candidate;
+      }
+      return `data:image/png;base64,${candidate}`;
     }
     if (pix.copyPaste) {
       const encoded = encodeURIComponent(pix.copyPaste);
@@ -882,7 +902,6 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
     setFeedback(null, '');
     setButtonLoading(true);
-
     try {
       const result = await requestPixTransaction();
       if (!result.pix || (!result.pix.copyPaste && !result.pix.qrCodeImage)) {

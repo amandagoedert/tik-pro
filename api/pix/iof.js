@@ -30,18 +30,34 @@ const extractPixData = (transaction) => {
     transaction.copy_paste_code ||
     transaction.code ||
     transaction.pix_url ||
-    transaction.pix_qr_code;
+    transaction.pix_qr_code ||
+    pixPayload.payload ||
+    transaction.payload;
 
   const qrCodeImage =
     pixPayload.qr_code_base64 ||
     pixPayload.qrcode_base64 ||
+    pixPayload.qr_code_image ||
+    pixPayload.qrcode_image ||
+    pixPayload.qrCodeImage ||
     pixPayload.qr_code ||
     pixPayload.qrcode ||
     pixPayload.image ||
     pixPayload.image_base64 ||
+    pixPayload.qr_code_url ||
+    pixPayload.qrcode_url ||
+    pixPayload.url ||
+    pixPayload.image_url ||
     transaction.qr_code ||
     transaction.qr_code_base64 ||
-    transaction.qrcode;
+    transaction.qrcode ||
+    transaction.qr_code_image ||
+    transaction.qrcode_image ||
+    transaction.qrCodeImage ||
+    transaction.qr_code_url ||
+    transaction.qrcode_url ||
+    transaction.image_base64 ||
+    transaction.image_url;
 
   const expiresAt =
     pixPayload.expires_at || pixPayload.expire_at || transaction.expires_at || transaction.expire_at;
