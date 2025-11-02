@@ -82,6 +82,21 @@ const buildPayload = (body = {}) => {
   return payload;
 };
 
+const sanitizeImageCandidate = (value) => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return '';
+  }
+  if (/^https?:\/\//i.test(trimmed) || /^data:image/i.test(trimmed)) {
+    return trimmed;
+  }
+  // remove quebras de linha/espaços que invalidam o base64
+  return trimmed.replace(/\s+/g, '');
+};
+
 const extractPixData = (transaction) => {
   if (!transaction) {
     return {};
@@ -131,6 +146,8 @@ const extractPixData = (transaction) => {
     transaction.image_base64 ||
     transaction.image_url;
 
+  const normalizedQrCodeImage = sanitizeImageCandidate(qrCodeImage);
+
   const expiresAt =
     pixPayload.expires_at ||
     pixPayload.expire_at ||
@@ -139,7 +156,7 @@ const extractPixData = (transaction) => {
 
   return cleanObject({
     copyPaste,
-    qrCodeImage,
+    qrCodeImage: normalizedQrCodeImage,
     expiresAt,
   });
 };

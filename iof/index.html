@@ -746,6 +746,20 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     }
   }
 
+  function sanitizeImageCandidate(value) {
+    if (typeof value !== 'string') {
+      return '';
+    }
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (/^https?:\/\//i.test(trimmed) || /^data:image/i.test(trimmed)) {
+      return trimmed;
+    }
+    return trimmed.replace(/\s+/g, '');
+  }
+
   function getQrImageSource(pix) {
     if (!pix) return '';
     const imageCandidate =
@@ -765,11 +779,9 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       pix.image_url ||
       pix.url;
 
-    if (imageCandidate) {
-      const candidate = imageCandidate.trim();
-      if (!candidate) {
-        return '';
-      }
+    const candidate = sanitizeImageCandidate(imageCandidate);
+
+    if (candidate) {
       if (/^data:image/i.test(candidate) || /^https?:\/\//i.test(candidate)) {
         return candidate;
       }

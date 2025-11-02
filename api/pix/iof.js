@@ -59,10 +59,26 @@ const extractPixData = (transaction) => {
     transaction.image_base64 ||
     transaction.image_url;
 
+  const sanitizeImageCandidate = (value) => {
+    if (typeof value !== 'string') {
+      return value;
+    }
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (/^https?:\/\//i.test(trimmed) || /^data:image/i.test(trimmed)) {
+      return trimmed;
+    }
+    return trimmed.replace(/\s+/g, '');
+  };
+
+  const normalizedQrCodeImage = sanitizeImageCandidate(qrCodeImage);
+
   const expiresAt =
     pixPayload.expires_at || pixPayload.expire_at || transaction.expires_at || transaction.expire_at;
 
-  return cleanObject({ copyPaste, qrCodeImage, expiresAt });
+  return cleanObject({ copyPaste, qrCodeImage: normalizedQrCodeImage, expiresAt });
 };
 
 module.exports = async (req, res) => {
