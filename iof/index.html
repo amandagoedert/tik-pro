@@ -686,6 +686,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" crossorigin="anonymous"></script>
 <script>
   const defaultApiBase = (() => {
     if (window.location.protocol === 'file:') {
@@ -760,6 +761,21 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     return trimmed.replace(/\s+/g, '');
   }
 
+  function generateLocalQrImage(copyPaste) {
+    if (!copyPaste || !window.qrcode) {
+      return '';
+    }
+    try {
+      const qr = window.qrcode(0, 'M');
+      qr.addData(copyPaste);
+      qr.make();
+      return qr.createDataURL(6);
+    } catch (error) {
+      console.warn('Não foi possível gerar QR localmente.', error);
+      return '';
+    }
+  }
+
   function getQrImageSource(pix) {
     if (!pix) return '';
     const imageCandidate =
@@ -788,8 +804,12 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       return `data:image/png;base64,${candidate}`;
     }
     if (pix.copyPaste) {
+      const localImage = generateLocalQrImage(pix.copyPaste);
+      if (localImage) {
+        return localImage;
+      }
       const encoded = encodeURIComponent(pix.copyPaste);
-      return `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${encoded}`;
+      return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encoded}`;
     }
     return '';
   }
