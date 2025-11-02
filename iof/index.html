@@ -852,10 +852,14 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       }
     } else {
       const rawText = await response.text();
+      // Evita imprimir HTML longo; fornece mensagem útil baseada no status HTTP
+      if (response.status === 404) {
+        throw new Error(
+          `A API PIX não foi encontrada (HTTP 404). Verifique a configuração de PIX_API_BASE (${PIX_API_BASE || '<vazio>'}).`
+        );
+      }
       throw new Error(
-        rawText
-          ? `A API PIX retornou um conteúdo inesperado: ${rawText.slice(0, 120)}`
-          : 'A API PIX não retornou dados.'
+        `A API PIX retornou conteúdo inesperado (status ${response.status}). Resposta curta: ${rawText ? rawText.replace(/\s+/g,' ').slice(0,80) : '<sem conteúdo>'}`
       );
     }
 

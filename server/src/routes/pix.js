@@ -94,9 +94,15 @@ const extractPixData = (transaction) => {
     pixPayload.copy_paste_code ||
     pixPayload.code ||
     pixPayload.emv ||
+    // Alguns provedores usam pix_url / pix_qr_code como campo com o EMV ou string do payload
+    pixPayload.pix_url ||
+    pixPayload.pix_qr_code ||
     transaction.copy_paste ||
     transaction.copy_paste_code ||
-    transaction.code;
+    transaction.code ||
+    // também considerar campos top-level que alguns provedores retornam
+    transaction.pix_url ||
+    transaction.pix_qr_code;
 
   const qrCodeImage =
     pixPayload.qr_code_base64 ||
